@@ -86,11 +86,24 @@ set shiftwidth=2
 set softtabstop=2
 set expandtab
 
-" Cursor
-set guicursor=
+" GUI
+set guioptions="cegmt"
+set termguicolors
+set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+            \,a:blinkwait700-blinkoff100-blinkon999-Cursor/lCursor
+if !has("nvim") && !empty($TMUX)
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
 
+" ----------------------------------------------------------------------
+" Colorscheme Settings
+" ----------------------------------------------------------------------
+nnoremap cyi :colorscheme yin<CR>
+nnoremap cya :colorscheme yang<CR>
+nnoremap cv :colorscheme vimalayas<CR>
 
-
+colorscheme yang
 
 packadd minpac
 
@@ -128,9 +141,10 @@ call minpac#add('nathanaelkane/vim-indent-guides')
 " Configuration for colorschemes
 call minpac#add('ayu-theme/ayu-vim', {'type': 'opt'})
 call minpac#add('arcticicestudio/nord-vim', {'type': 'opt'})
-call minpac#add('itchyny/lightline.vim')
+call minpac#add('pgdouyon/vim-yin-yang', {'type':'opt'})
+call minpac#add('pgdouyon/vim-alayas', {'type':'opt'})
 call minpac#add('sainnhe/lightline_foobar.vim')
-call minpac#add('jeffkreeftmeijer/vim-dim')
+call minpac#add('itchyny/lightline.vim')
 
  " Filetypes
 call minpac#add( 'neapel/vim-n3-syntax')         " rdf, turtle, etc.  
@@ -204,15 +218,7 @@ tnoremap <esc> <c-\><c-n>
 "
 "
 set termguicolors     " enable true colors support
-let ayucolor="light"  " for light version of theme
-colorscheme ayu
 " themes
-if has("gui_vimr")
-    let ayucolor="light"
-    colorscheme ayu
-else
-    colorscheme dim
-endif
 
 let g:lightline_foobar_bold = 1
  let g:lightline = {
