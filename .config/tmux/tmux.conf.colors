@@ -1,4 +1,6 @@
-
+ # Status line
+  set-option -g status on
+  se
 # 256-color terminal
 set-option -g default-terminal tmux-256color
 
