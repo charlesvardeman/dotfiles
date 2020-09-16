@@ -16,13 +16,26 @@ export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump-${HOST}-${ZSH_VERSION}"
 # ZSH dotfiles in .config/zsh
 export ZDOTDIR=$XDG_CONFIG_HOME/zsh
 
-# set location for zplug manager
-export ZPLUG_HOME=/usr/local/opt/zplug
+# set location for zinit paths
+# This zsh configuration uses zinit as its plugin manage
+# https://github.com/zdharma/zinit
+export ZINIT[BIN_DIR]="$ZDOTDIR/zinit/bin"
+export ZINIT[HOME_DIR]="$ZDOTDIR/zinit"
+export ZINIT[PLUGINS_DIR]="$ZDOTDIR/zinit/plugins"
+export ZINIT[COMPLETIONS_DIR]="$ZDOTDIR/zinit/completions"
+export ZINIT[SNIPPETS_DIR]="$ZDOTDIR/zinit/snippets"
+export ZINIT[ZCOMPDUMP_PATH]="$ZDOTDIR/zinit/.zcompdump"
+
+# set location for tmux plugin manager
+export TMUX_PLUGIN_MANAGER_PATH=$XDG_CONFIG_HOME/tmux/plugins/
 
 # Set language environment
 export LANG=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
+
+# Set preferred vim locations
+export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
