@@ -86,6 +86,13 @@ set shiftwidth=2
 set softtabstop=2
 set expandtab
 
+" Folding
+if has('folding')
+  set foldmethod=indent               " not as cool as syntax, but faster
+  set foldlevelstart=99               " start unfolded
+endif
+
+
 " GUI
 set guioptions="cegmt"
 set termguicolors
