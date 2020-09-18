@@ -19,6 +19,7 @@ export ZDOTDIR=$XDG_CONFIG_HOME/zsh
 # set location for zinit paths
 # This zsh configuration uses zinit as its plugin manage
 # https://github.com/zdharma/zinit
+declare -A ZINIT
 export ZINIT[BIN_DIR]="$ZDOTDIR/zinit/bin"
 export ZINIT[HOME_DIR]="$ZDOTDIR/zinit"
 export ZINIT[PLUGINS_DIR]="$ZDOTDIR/zinit/plugins"
