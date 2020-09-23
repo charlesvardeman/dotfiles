@@ -273,6 +273,72 @@ alias p='sudo pacman'
 alias cat='bat'
 alias ping='prettyping --nolegend'
 
+# Execute ls -lSrah
+alias dir="command ls -lSrah"
+# Only show dot-directories
+alias lad='command ls -d .*(/)'
+# Only show dot-files
+alias lsa='command ls -a .*(.)'
+# Only files with setgid/setuid/sticky flag
+alias lss='command ls -l *(s,S,t)'
+# Only show symlinks
+alias lsl='command ls -l *(@)'
+# Display only executables
+alias lsx='command ls -l *(*)'
+# Display world-{readable,writable,executable} files
+alias lsw='command ls -ld *(R,W,X.^ND/)'
+# Display the ten biggest files
+alias lsbig="command ls -flh *(.OL[1,10])"
+# Only show directories
+alias lsd='command ls -d *(/)'
+# Only show empty directories
+alias lse='command ls -d *(/^F)'
+# Display the ten newest files
+alias lsnew="command ls -rtlh *(D.om[1,10])"
+# Display the ten oldest files
+alias lsold="command ls -rtlh *(D.Om[1,10])"
+# Display the ten smallest files
+alias lssmall="command ls -Srl *(.oL[1,10])"
+# Display the ten newest directories and ten newest .directories
+alias lsnewdir="command ls -rthdl *(/om[1,10]) .*(D/om[1,10])"
+# Display the ten oldest directories and ten oldest .directories
+alias lsolddir="command ls -rthdl *(/Om[1,10]) .*(D/Om[1,10])"
+
+alias 'ttop=top -ocpu -R -F -s 2 -n30'
+alias 'thtop= htop -s PERCENT_CPU'
+
+# # linked data {{{
+# Some handy shortcuts
+alias curtle='curl -H "Accept: text/turtle"'
+alias curltrig='curl -H "Accept: application/trig"'
+alias curltriples='curl -H "Accept: application/n-triples"'
+alias curlquads='curl -H "Accept: application/n-quads"'
+alias curlson='curl -H "Accept: application/json"'
+alias curld='curl -H "Accept: application/ld+json"'
+
+# N-Triples aliases from http://blog.datagraph.org/2010/03/grepping-ntriples
+alias rdf-count="awk '/^\s*[^#]/ { n += 1 } END { print n }'"
+alias rdf-lengths="awk '/^\s*[^#]/ { print length }'"
+alias rdf-length-avg="awk '/^\s*[^#]/ { n += 1; s += length } END { print s/n }'"
+alias rdf-length-max="awk 'BEGIN { n=0 } /^\s*[^#]/ { if (length>n) n=length } END { print n }'"
+alias rdf-length-min="awk 'BEGIN { n=1e9 } /^\s*[^#]/ { if (length>0 && length<n) n=length } END { print (n<1e9 ? n : 0) }'"
+alias rdf-subjects="awk '/^\s*[^#]/ { print \$1 }' | uniq"
+alias rdf-predicates="awk '/^\s*[^#]/ { print \$2 }' | uniq"
+alias rdf-objects="awk '/^\s*[^#]/ { ORS=\"\"; for (i=3;i<=NF-1;i++) print \$i \" \"; print \"\n\" }' | uniq"
+alias rdf-datatypes="awk -F'\x5E' '/\"\^\^</ { print substr(\$3, 2, length(\$3)-4) }' | uniq"
+
+alias -s rdf="rapper --count"
+alias -s owl="rapper --count"
+alias -s ttl="rapper -i turtle --count"
+alias -s tt="rapper -i turtle --count"
+alias -s n3="rapper -i turtle --count"
+alias -s nq="rapper -i nquads --count"
+alias -s nt="rapper -i ntriples --count"
+alias -s ntriples="rapper -i ntriples --count"
+alias -s ntriple="rapper -i ntriples --count"
+alias -s trig="rapper -i trig --count"
+#}}}
+
 alias preview="fzf --preview 'bat --color \"always\" {}'"
 THEME="material-palenight"
 if [ "$THEME" = "OceanicNext" ]; then
@@ -380,3 +446,6 @@ set modelines=3
 # Custom folding for this file
 # vim:foldmethod=marker:foldlevel=0
 # }}}
+
+# To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
+[[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
