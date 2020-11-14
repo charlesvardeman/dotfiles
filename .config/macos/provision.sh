@@ -61,9 +61,7 @@ do
   brew install $app
 done
 
-echo '========== Set default shell to zsh =========='
-sudo /usr/bin/env zsh -c 'grep -qxF /usr/local/bin/zsh /etc/shells || echo /usr/local/bin/zsh >> /etc/shells'
-chsh -s /usr/local/bin/zsh
+
 
 echo '========== Upgrading CLI apps =========='
 brew upgrade
@@ -74,7 +72,6 @@ brew tap homebrew/cask-fonts
 # pages
 # endpoint security vpn
 declare -a guiApps=(
-  '1password'                # 1Password password manager
   'basictex'
   'docker-edge'              # Containerize, but not all things
   'drawio'
@@ -86,16 +83,12 @@ declare -a guiApps=(
   'font-iosevka-nerd-font'
   'font-iosevka-nerd-font-mono'
   'font-iosevka-slab'
+  'font-meslo-lg-nerd-font'
   'google-chrome'
   'google-backup-and-sync'
-  'hammerspoon'
   'iterm2'                   # Iterm2 is so much better than macOS Terminal
-  'kitty'
-  'karabiner-elements'
-  'moom'
   'postman'                  # Postman for API development
   'slack'
-  'spotify'
   'visual-studio-code'
   'zoom'
 )
@@ -116,7 +109,20 @@ brew install jena
 brew cask install protege
 
 
-echo '========== Installing powerlevel10 theme =========='
+echo '========== Set default shell to zsh =========='
+if ! [ -x "$(command -v brew)" ]; then
+  echo '========== Installing Homebrew =========='
+  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+else
+  echo "========== Update Homebrew ========="
+  brew update
+fi
+
+# echo '========== Set default shell to zsh =========='
+# sudo /usr/bin/env zsh -c 'grep -qxF /usr/local/bin/zsh /etc/shells || echo /usr/local/bin/zsh >> /etc/shells'
+# chsh -s /usr/local/bin/zsh
+
+# echo '========== Installing powerlevel10 theme =========='
 #if [ -d "${ZSH_CUSTOM}/themes/powerlevel10k" ]; then
 #  echo ' ---- update powerlevel10k theme'
 #  cd "${ZSH_CUSTOM}/themes/powerlevel10k"
@@ -183,13 +189,3 @@ echo '========== Install latest node   ==========='
 echo '========== Create cache directories =========='
 mkdir -p "${XDG_CACHE_HOME}/irb"
 
-echo "========== Install dein.vim plugin manager =========="
-if [ -d "${XDG_CACHE_HOME}/dein" ]; then
-  echo ' ---- dein.vim already installed'
-else
-  cd $HOME
-  curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > installer.sh
-  sh ./installer.sh  "${XDG_CACHE_HOME}/dein"
-  rm installer.sh
-  echo ' ----- run :call dein#install() from within vim'
-fi
