@@ -2,7 +2,7 @@
 
 if ! [ -x "$(command -v brew)" ]; then
   echo '========== Installing Homebrew =========='
-  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 else
   echo "========== Update Homebrew ========="
   brew update
@@ -49,10 +49,6 @@ declare -a cliApps=(
   'vcsh'                  # config manager based on Git
   'yq'
   'yarn'                  # Fast, reliable, and secure dependency management.
-  'zsh'                   # Zsh is a shell designed for interactive use, although it is also a powerful scripting language.
-  'zsh-autosuggestions'
-  'zsh-completion'        # Additional completion definitions for Zsh.
-  'zplug'                 # Plugin manager
 )
 
 echo '========== Installing CLI apps =========='
@@ -109,13 +105,11 @@ brew install jena
 brew cask install protege
 
 
-echo '========== Set default shell to zsh =========='
-if ! [ -x "$(command -v brew)" ]; then
-  echo '========== Installing Homebrew =========='
-  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+echo '========== Install ZSH4Humans =========='
+if command -v curl >/dev/null 2>&1; then
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/romkatv/zsh4humans/v5/install)"
 else
-  echo "========== Update Homebrew ========="
-  brew update
+  sh -c "$(wget -O- https://raw.githubusercontent.com/romkatv/zsh4humans/v5/install)"
 fi
 
 # echo '========== Set default shell to zsh =========='
