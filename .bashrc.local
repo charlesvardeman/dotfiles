@@ -11,9 +11,15 @@ alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
 export VISUAL=vim
 export EDITOR="$VISUAL"
 export PERL_MM_USE_DEFAULT=1
+export IGNOREEOF=2
+export PAGER=less
+export LESS=-XRi
+export LANG='en_US.UTF-8'
 
-export GEM_HOME="$HOME/gems"
-export PATH="$HOME/gems/bin:$PATH"
+
+export CLICOLOR=1
+
+
 
 tarz () { tar -I pigz -cf $1.tgz $1; }
 commit () { git commit -am "${1}"; git push; }
@@ -48,3 +54,48 @@ vibashl () {
 }
 
 eval "$(gh completion -s bash)"
+
+# Vanilla MacOS, based on BSD, has a different `ls`. It uses -G instead
+# of --color. The colors are also handled differently (dircolors is not
+# available by default; uses different env vars for controlling colors).
+#
+# Previously depended on a conda environment with GNU coreutils
+# installed so that we get the exact same colors as on Linux. That proved
+# finicky. See [0] for some details.  so this always uses the system `ls` on Mac, setting the colors to be
+# close enough.
+#
+# The solution here is:
+#  - check $LS_COLORS (note underscore) in an environment with dircolors and GNU ls
+#  - paste the value of $LS_COLORS into [2]
+#  - copy the reported $LSCOLORS (no underscore) value. That will be used by BSD ls.
+#  - export LSCOLORS on Mac.
+#
+# [0] https://github.com/daler/dotfiles/pull/35
+# [1] https://superuser.com/a/1746907
+# [2] https://geoff.greer.fm/lscolors
+#
+if [[ $OSTYPE == darwin* ]]; then
+    export LSCOLORS=cxgxfxexbxegedabagacad
+    alias ls='/bin/ls -G'
+else
+    if command -v dircolors > /dev/null; then
+        test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    fi
+    alias ls="ls --color=auto"
+fi
+
+# Essential bash completion
+if [ -x "$(command -v brew)" ]; then
+  if [ -f $(brew --prefix)/etc/bash_completion ]
+    then
+      source $(brew --prefix)/etc/bash_completion
+    fi
+  fi
+
+# Fix Catalina zsh shit warning
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
+if [ -d $HOME/.modular ]; then
+  export MODULAR_HOME="/Users/cvardema/.modular"
+  export PATH="/Users/cvardema/.modular/pkg/packages.modular.com_mojo/bin:$PATH"
+fi
