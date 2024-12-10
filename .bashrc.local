@@ -99,3 +99,8 @@ if [ -d $HOME/.modular ]; then
   export MODULAR_HOME="/Users/cvardema/.modular"
   export PATH="/Users/cvardema/.modular/pkg/packages.modular.com_mojo/bin:$PATH"
 fi
+
+# Make sure that local bin is in path
+#
+export PATH="/Users/cvardema/.local/bin:$PATH"
+
