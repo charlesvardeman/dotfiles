@@ -36,6 +36,7 @@ brew install --cask font-cascadia-code
 brew install --cask font-fira-code
 brew install --cask font-iosevka-nerd-font
 brew install --cask font-monaspace
+brew install --cask font-meslo-lg-nerd-font
 ```
 
 - **Terminal:** Kids these days seem to be using alacritty, but JH is alos using [Ghostty](https://mitchellh.com/writing/ghostty-is-coming)
