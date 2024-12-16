@@ -5,3 +5,9 @@ source ~/.bashrc.local
 #
 export ANTHROPIC_API_KEY=""
 alias ssage="uv tool run ssage"
+
+# Enable Bash completion
+if [ -f /opt/homebrew/etc/bash_completion ]; then
+    . /opt/homebrew/etc/bash_completion
+fi
+

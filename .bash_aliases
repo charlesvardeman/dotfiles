@@ -26,3 +26,8 @@ a v='fzf --preview "bat --color \"always\" --theme GitHub {}"'
 
 # Save three keystrokes to go up a directory
 alias ..="cd .."
+
+a cv="cd $HOME/dev/git/charlesvardeman"
+a la3d="cd $HOME/dev/git/LA3D"
+a crc=" cd $HOME/dev/git/crcresearch"
+
