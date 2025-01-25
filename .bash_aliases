@@ -9,11 +9,11 @@ a issue="gh issue create"
 a enhancement="gh issue create -l enhancement -b '' -t"
 a bug="gh issue create -l bug -b '' -t"
 a breaking="gh issue create -l breaking -b '' -t"
-a note="gh issue -R jph00/notes create"
+# a note="gh issue -R charlesvardeman/notes create"
 
 alias gitssh="perl -pi -e 's#https://github\.com/#git\@github.com:# if /\[remote \"origin/../fetch =/' .git/config"
 
-a minst="mamba install -c defaults"
+# a minst="mamba install -c defaults"
 
 a grep='grep  --color=auto --exclude-dir={.git}'
 a ll='ls -lrth'
