@@ -139,6 +139,43 @@ or manually launching the new Bash with:
 If issues persist, ensure the correct shell path is listed in /etc/shells and rerun chsh -s. A restart should finalize the switch.
 
 #### Minimal Homebrew Packages
+My dotfiles require some packages in addition to to be installed from homebrew.
+
+Minimal required installs
+```sh
+brew install uv
+brew install gh
+brew install tmux
+brew install universal-ctags
+```
+
+Nice to haves:
+```sh
+brew install bat
+brew install curl
+brew install wget
+brew install exa
+brew install fzf
+brew install jq
+brew install ripgrep
+```
+
+In addition, if you are using [nbdev](https://nbdev.fast.ai/) for development, you can install [quarto](https://quarto.org/) via cask:
+```
+brew install --cask quarto
+```
+Quarto is very useful for using Jupyter notebooks as the basis for doing science and lowering the barriers to publications using [scientific markdown](https://quarto.org/docs/authoring/markdown-basics.html).
+
+I generally let brew manage the MacOS apps like vscode also:
+```sh
+brew install --cask docker
+brew install --cask slack
+brew install --cask zoom
+brew install --cask visual-studio-code
+brew install --cask ghostty
+brew install --cask xquartz
+```
+
 
 #### Clone the Github Repository
 
@@ -149,9 +186,22 @@ If issues persist, ensure the correct shell path is listed in /etc/shells and re
 ### WSL (ToDo)
 
 ### Python package management with uv
+I use [uv](https://github.com/astral-sh/uv), "An extremely fast Python package and project manager, written in Rust." for managing project based python dependencies, python versions and python baed tools. In my current workflow, I install uv via homebrew on MacOS and via command line on linux because of historical reasons. Simon Willison has many nice [examples](https://simonwillison.net/tags/uv/) on his [weblog](https://simonwillison.net/) on why uv is a good approach to package management. This installs to the .local path following the [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/latest/).
+
+```
+# On macOS and Linux.
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
 
 
 ### Shell-Sage
+As my command-line AI copilot I use [Answer.ai ShellSage](https://ssage.answer.ai/) which operates in a [Tmux](https://www.redhat.com/en/blog/introduction-tmux-linux) environment to give context to the LLM. Shell-sage can be configured to use Anthropic Claude (what I use) or OpenAI models. My ShellSage configuration is in .config repo and will be installed in the proper [XDG_CONFIG_HOME](https://specifications.freedesktop.org/basedir-spec/latest/). I install shell-sage via uv as a tool
+
+```sh
+uv tool install shell_sage
+```
+
+And then define an alias and export the anthropic key in my `.bashrc`. Since my .bashrc is 
 
 
 ### Config files in this repo.
