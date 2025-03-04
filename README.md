@@ -201,12 +201,18 @@ As my command-line AI copilot I use [Answer.ai ShellSage](https://ssage.answer.a
 uv tool install shell_sage
 ```
 
-And then define an alias and export the anthropic key in my `.bashrc`. Since my .bashrc is 
+And then define an alias and export the anthropic key in my `.bashrc`.
+```sh
+alias ssage="uv tool run ssage"
+```
+
+Since my `.bashrc` is in a .gitignore, I don't worry about accidentally commiting a sensitive api key to my github repository. 
+
 
 
 ### Config files in this repo.
 Contents:
-- .config/ - Contains configuration files for specific applications.
+- .config/ - XDG directory Contains configuration files for specific applications like shell-sage and Ghostty
 - .ackrc - Configuration file for ack, a grep-like text finder.
 -	.bash_aliases - Custom shell aliases for more efficient command-line usage.
 -	.bashrc.local & .bashrc.mac - Custom Bash configurations for different environments.
