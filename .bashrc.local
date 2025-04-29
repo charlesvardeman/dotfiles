@@ -104,26 +104,21 @@ fi
 #
 export PATH="/Users/cvardema/.local/bin:$PATH"
 
-## Use nbdev+uv templates
 # -------------------------------------------------------------------
-#  nbdev + uv helpers  ── improved
+#  nbdev + uv helpers  (2025-04-update)
 # -------------------------------------------------------------------
 
-# ---- GLOBAL DEFAULTS (override in your rc if you like) -------------
 export NBDEV_TEMPLATE_REPO="la3d/nbdev-template-cc"   # template repo
-export UV_PYTHON="python3.11"                         # python used by uv
-export NBDEV_DEFAULT_VIS="--private"                  # or --public
+export NBDEV_DEFAULT_VIS="--private"                  # default visibility
 
-# ---- SHORT ALIASES -------------------------------------------------
-alias uv-sync="uv pip sync"
+# ---- ALIASES -------------------------------------------------------
+alias uv-sync="uv sync"                               # ✅ no arg needed
 alias nb-prep="nbdev_export && nbdev_clean"
 alias nb-test="nbdev_test && pytest -q"
 alias nb-ci="nb-prep && nb-test"
 alias nb-docs="nbdev_preview"
 
 # ---- FUNCTIONS -----------------------------------------------------
-
-# nb-new  <project>  [-o org]  [--public|--private|--internal]  [extra gh flags...]
 nb-new () {
   if [[ -z "$1" ]]; then
     echo "Usage: nb-new <project-name> [-o org] [--public|--private|--internal] [extra gh flags...]"
@@ -133,27 +128,30 @@ nb-new () {
   local PRJ="$1"; shift
   local ORG=""; local VIS="$NBDEV_DEFAULT_VIS"; local GHFLAGS=()
 
-  # crude flag parser
   while (( "$#" )); do
     case "$1" in
-      -o|--org)      ORG="$2"; shift 2 ;;
-      --public|--private|--internal)
-                     VIS="$1"; shift ;;
-      *)             GHFLAGS+=("$1"); shift ;;
+      -o|--org) ORG="$2"; shift 2 ;;
+      --public|--private|--internal) VIS="$1"; shift ;;
+      *) GHFLAGS+=("$1"); shift ;;
     esac
   done
 
   local TARGET_REPO="${ORG:+$ORG/}$PRJ"
 
-  echo "🚀 Creating GitHub repo $TARGET_REPO from $NBDEV_TEMPLATE_REPO ($VIS)…"
-  gh repo create "$TARGET_REPO" --template "$NBDEV_TEMPLATE_REPO" "$VIS" "${GHFLAGS[@]}" || return 1
+  echo "🚀 Creating & cloning $TARGET_REPO from $NBDEV_TEMPLATE_REPO ($VIS)…"
+  gh repo create "$TARGET_REPO" \
+      --template "$NBDEV_TEMPLATE_REPO" \
+      "$VIS" -c -y "${GHFLAGS[@]}" || return 1   # -c==--clone, -y skips prompt
+
   cd "$PRJ" || return 1
 
   echo "📦 Syncing dev environment with uv…"
   uv-sync || return 1
 
   echo "📝 Generating nbdev settings.ini…"
-  nbdev_create_config --repo "$TARGET_REPO" --author "$(git config user.name)" --description "$PRJ library"
+  nbdev_create_config --repo "$TARGET_REPO" \
+      --author "$(git config user.name)" \
+      --description "$PRJ library"
 
   git add .
   git commit -m "Initial nbdev scaffolding"
@@ -161,5 +159,5 @@ nb-new () {
   echo "✅  Project $TARGET_REPO ready!"
 }
 
-# run the full pipeline locally
+# run the whole pipeline locally
 nb-runall () { uv-sync && nb-ci; }
