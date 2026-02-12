@@ -1,4 +1,4 @@
-stty -ixon
+if [ -t 0 ]; then stty -ixon; fi 
 shopt -s globstar
 
 parse_git_branch() { b=$(git branch --show-current 2> /dev/null); echo ${b:+" ($b)"}; }
@@ -161,3 +161,90 @@ nb-new () {
 
 # run the whole pipeline locally
 nb-runall () { uv-sync && nb-ci; }
+
+# -------------------------------------------------------------------
+#  uvws workspace helpers
+# -------------------------------------------------------------------
+
+# Activate uvws on shell startup if it exists
+if [ -f "$HOME/uvws/.venv/bin/activate" ]; then
+    source "$HOME/uvws/.venv/bin/activate"
+fi
+
+# Switch to uvws workspace mode
+ws () {
+    if [ ! -f "$HOME/uvws/.venv/bin/activate" ]; then
+        echo "❌ uvws not found at ~/uvws"
+        echo "   Clone it with: cd ~ && git clone git@github.com:charlesvardeman/uvws.git && cd uvws && uv sync"
+        return 1
+    fi
+
+    # Deactivate current venv if active
+    if command -v deactivate &> /dev/null; then
+        deactivate
+    fi
+
+    source "$HOME/uvws/.venv/bin/activate"
+    echo "✅ Switched to uvws workspace mode"
+}
+
+# Switch to local .venv mode
+lv () {
+    if [ ! -f ".venv/bin/activate" ]; then
+        echo "❌ No .venv found in current directory"
+        return 1
+    fi
+
+    # Deactivate current venv if active
+    if command -v deactivate &> /dev/null; then
+        deactivate
+    fi
+
+    source .venv/bin/activate
+    echo "✅ Switched to local .venv mode"
+}
+
+# Add package(s) to uvws workspace and commit
+ws-add () {
+    if [ -z "$1" ]; then
+        echo "Usage: ws-add <package> [package2 ...]"
+        return 1
+    fi
+
+    if [ ! -d "$HOME/uvws" ]; then
+        echo "❌ uvws not found at ~/uvws"
+        return 1
+    fi
+
+    pushd "$HOME/uvws" > /dev/null || return 1
+
+    echo "📦 Adding $* to uvws workspace..."
+    uv add "$@" || { popd > /dev/null; return 1; }
+
+    git add pyproject.toml
+    git commit -m "Add $* to workspace"
+    git push
+
+    popd > /dev/null
+    echo "✅ Added $* to workspace and pushed to GitHub"
+}
+
+# Update all packages in uvws workspace
+ws-update () {
+    if [ ! -d "$HOME/uvws" ]; then
+        echo "❌ uvws not found at ~/uvws"
+        return 1
+    fi
+
+    pushd "$HOME/uvws" > /dev/null || return 1
+
+    echo "📦 Updating uvws workspace packages..."
+    uv sync --upgrade || { popd > /dev/null; return 1; }
+
+    git add pyproject.toml
+    git commit -m "Update workspace packages"
+    git push
+
+    popd > /dev/null
+    echo "✅ Updated workspace packages and pushed to GitHub"
+}

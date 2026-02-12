@@ -30,4 +30,4 @@ alias ..="cd .."
 alias cv="cd $HOME/dev/git/charlesvardeman"
 alias la3d="cd $HOME/dev/git/LA3D"
 alias crc=" cd $HOME/dev/git/crcresearch"
-
+alias cwo='CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1 claude --add-dir ~/Obsidian/obsidian'
