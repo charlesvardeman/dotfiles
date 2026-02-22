@@ -1,0 +1,20 @@
+[core]
+	editor = vim
+	pager = delta
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true
+	side-by-side = true
+	line-numbers = true
+	syntax-theme = GitHub
+
+[merge]
+	conflictstyle = zdiff3
+[init]
+	defaultBranch = main
+[user]
+	name = CharlesVardeman
+	email = charles.vardeman@gmail.com
